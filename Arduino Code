@@ -1,0 +1,49 @@
+
+//PWM pins
+const int pwmR = 5;
+const int pwmG = 3;
+const int pwmB = 6;
+int red = 0;
+int green = 0;
+int blue = 0;
+
+void setup() {
+  
+  //initia serial interface
+  Serial.begin(9600);
+  
+  //set pins as output
+  pinMode(pwmR, OUTPUT);
+  pinMode(pwmG, OUTPUT);
+  pinMode(pwmB, OUTPUT);
+  
+}
+
+void loop() {
+  
+    
+  while (true){
+    // look for the next valid integer in the incoming serial stream and designate variables:
+    red = Serial.parseInt();
+    // do it again:
+    green = Serial.parseInt();
+    // do it again:
+    blue = Serial.parseInt();
+
+
+
+    // look for the newline. That's the end of your string/array
+    if (Serial.read() == '\n') {
+      // constrain the values to 0 - 255. 0 being off and 255 being 100%
+      red = constrain(red, 0, 255);
+      green = constrain(green, 0, 200);
+      blue = constrain(blue, 0, 200);
+
+      // PWM the red, green, and blue legs of the LED:
+      analogWrite(pwmR, red);
+      analogWrite(pwmG, green);
+      analogWrite(pwmB, blue);
+      delay(10); //if no delay you may not see anything as it would switch too fast
+    }
+  }
+}
